@@ -1,1 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat App</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">💬 Chat</div>
+    <div class="user-info" id="userInfo" style="display:none;">
+      <span class="status-indicator online" id="statusIndicator"></span>
+      <span id="currentUser"></span>
+    </div>
+    <div class="actions">
+      <button id="themeToggle" title="Toggle theme" class="icon-btn">🌙</button>
+      <button id="logoutBtn" title="Log out" class="secondary" style="display:none;">Logout</button>
+    </div>
+  </header>
 
+  <div class="container">
+    <aside class="sidebar">
+      <div class="auth-card" id="authCard">
+        <h2 id="authTitle">Login</h2>
+        <form id="authForm">
+          <label class="field">
+            <span>Username</span>
+            <input type="text" id="authUsername" required autocomplete="username"/>
+          </label>
+          <label class="field">
+            <span>Password</span>
+            <input type="password" id="authPassword" required autocomplete="current-password"/>
+          </label>
+          <button type="submit" class="primary">Login</button>
+        </form>
+        <div class="switch-auth">
+          <span id="authSwitchText">No account?</span>
+          <button id="switchAuthBtn" class="link">Sign up</button>
+        </div>
+      </div>
+
+      <div id="appPanels" style="display:none;">
+        <div class="tabs">
+          <button class="tab active" data-tab="channelsTab" title="Channels">
+            <span class="tab-icon">#</span>
+            <span>Channels</span>
+          </button>
+          <button class="tab" data-tab="friendsTab" title="Friends">
+            <span class="tab-icon">👥</span>
+            <span>Friends</span>
+            <span class="badge" id="friendsBadge" style="display:none;">0</span>
+          </button>
+          <button class="tab" data-tab="profileTab" title="Profile">
+            <span class="tab-icon">👤</span>
+            <span>Profile</span>
+          </button>
+        </div>
+
+        <div id="channelsTab" class="tab-panel">
+          <div class="panel-header">
+            <h3>Channels</h3>
+            <button id="refreshChannels" title="Refresh channels" class="icon-btn">↻</button>
+          </div>
+          <div class="create-channel">
+            <input id="channelInput" placeholder="Create or join channel" maxlength="50"/>
+            <label class="checkbox-label" title="Private channels require invites">
+              <input type="checkbox" id="privateToggle"/>
+              <span>🔒 Private</span>
+            </label>
+            <button id="enterChannelBtn" class="primary">Enter</button>
+          </div>
+          <div class="search-box">
+            <input id="channelSearch" placeholder="🔍 Search channels..." />
+          </div>
+          <div id="channelList" class="channel-list"></div>
+        </div>
+
+        <div id="friendsTab" class="tab-panel" style="display:none;">
+          <div class="panel-header">
+            <h3>Friends</h3>
+            <button id="refreshFriends" title="Refresh friends" class="icon-btn">↻</button>
+          </div>
+          <div class="friend-actions">
+            <input id="friendUsername" placeholder="Add friend by username" maxlength="30"/>
+            <button id="sendFriendReqBtn" class="primary">Request</button>
+          </div>
+          <div class="friend-section">
+            <h4>Incoming requests</h4>
+            <div id="incomingList" class="friend-list empty-state">No incoming requests</div>
+          </div>
+          <div class="friend-section">
+            <h4>Outgoing requests</h4>
+            <div id="outgoingList" class="friend-list empty-state">No pending requests</div>
+          </div>
+          <div class="friend-section">
+            <h4>Friends</h4>
+            <div id="friendsList" class="friend-list empty-state">No friends yet</div>
+          </div>
+        </div>
+
+        <div id="profileTab" class="tab-panel" style="display:none;">
+          <div class="panel-header">
+            <h3>Your Profile</h3>
+          </div>
+          <div class="profile-card">
+            <label class="field">
+              <span>Bio</span>
+              <textarea id="profileBio" placeholder="Tell us about yourself..." maxlength="200"></textarea>
+            </label>
+            <label class="field">
+              <span>Status</span>
+              <input id="profileStatus" placeholder="What's on your mind?" maxlength="50"/>
+            </label>
+            <button id="saveProfileBtn" class="primary">Save Profile</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="chat">
+      <div id="welcomeBar" class="welcome" style="display:none;"></div>
+      <div id="currentChannelBar" class="channel-bar" style="display:none;">
+        <div class="channel-info">
+          <span id="channelName"></span>
+          <span id="channelPrivacy"></span>
+        </div>
+        <div id="channelActions" style="display:none;">
+          <button id="inviteBtn" class="secondary" title="Invite member">➕ Invite</button>
+          <button id="channelSettingsBtn" class="icon-btn" title="Channel settings">⚙️</button>
+        </div>
+      </div>
+
+      <div id="inviteModal" class="modal" style="display:none;">
+        <div class="modal-content">
+          <h3>Invite to Channel</h3>
+          <input id="inviteUsername" placeholder="Username to invite" maxlength="30"/>
+          <div class="modal-actions">
+            <button id="sendInviteBtn" class="primary">Send Invite</button>
+            <button id="cancelInviteBtn" class="secondary">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-switch">
+        <button id="toChannelChatBtn" class="secondary active">💬 Channel chat</button>
+        <button id="toDmChatBtn" class="secondary">📨 Direct messages</button>
+      </div>
+
+      <div id="typingIndicator" class="typing-indicator" style="display:none;"></div>
+
+      <div id="chatWindow" class="chat-window"></div>
+      <div id="composer" class="composer" style="display:none;">
+        <button id="emojiBtn" class="icon-btn" title="Emoji picker">😀</button>
+        <input id="messageInput" placeholder="Type a message (use @username to mention)" maxlength="2000"/>
+        <button id="sendBtn" class="primary">Send</button>
+      </div>
+
+      <div id="dmBar" class="dm-bar" style="display:none;">
+        <div class="dm-info">
+          <span id="dmUsername"></span>
+          <span class="status-indicator" id="dmStatus"></span>
+        </div>
+      </div>
+      <div id="dmTypingIndicator" class="typing-indicator" style="display:none;"></div>
+      <div id="dmWindow" class="chat-window" style="display:none;"></div>
+      <div id="dmComposer" class="composer" style="display:none;">
+        <button id="dmEmojiBtn" class="icon-btn" title="Emoji picker">😀</button>
+        <input id="dmInput" placeholder="Type a DM..." maxlength="2000"/>
+        <button id="dmSendBtn" class="primary">Send</button>
+      </div>
+    </main>
+  </div>
+
+  <div id="emojiPicker" class="emoji-picker" style="display:none;">
+    <div class="emoji-grid" id="emojiGrid"></div>
+  </div>
+
+  <div id="notification" class="notification" style="display:none;"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
