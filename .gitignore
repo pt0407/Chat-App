@@ -1,1 +1,18 @@
+# Node.js dependencies
+node_modules/
+
+# Local SQLite database (don't commit unless you want sample data)
+chat.db
+
+# Environment variables (for secrets like DB URLs or API keys)
+.env
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# OS-specific junk
+.DS_Store
+Thumbs.db
 
