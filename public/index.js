@@ -899,7 +899,10 @@ function escapeHtml(s) {
 }
 
 function escapeRegex(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\function hideDmUi() {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function hideDmUi() {
   dmBar.style.display = 'none';
   dmWindow.style');
 }
