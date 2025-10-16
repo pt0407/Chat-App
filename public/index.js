@@ -904,7 +904,7 @@ function escapeRegex(str) {
 
 function hideDmUi() {
   dmBar.style.display = 'none';
-  dmWindow.style');
+  dmWindow.style.display = 'none';
 }
 
 // Initialize
