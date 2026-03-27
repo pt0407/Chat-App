@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultural and Identity Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="start-screen" class="screen active">
+            <h1>Cultural and Identity Quiz</h1>
+            <p class="subtitle">Test your knowledge on culture, art, and identity throughout history</p>
+            <button id="start-btn" class="btn btn-primary">Start Quiz</button>
+            <button id="view-leaderboard-btn" class="btn btn-secondary">View Leaderboard</button>
+        </div>
+
+        <div id="quiz-screen" class="screen">
+            <div class="quiz-header">
+                <div class="timer">
+                    <span class="timer-label">Time:</span>
+                    <span id="timer">0:00</span>
+                </div>
+                <div class="progress">
+                    <span id="question-counter">Question 1 of 10</span>
+                </div>
+            </div>
+
+            <div id="quiz-content">
+                <h2 id="question-text"></h2>
+                <div id="options-container" class="options"></div>
+            </div>
+
+            <button id="next-btn" class="btn btn-primary" style="display: none;">Next Question</button>
+            <button id="submit-quiz-btn" class="btn btn-primary" style="display: none;">Submit Quiz</button>
+        </div>
+
+        <div id="result-screen" class="screen">
+            <h1>Quiz Complete!</h1>
+            <div class="result-stats">
+                <div class="stat">
+                    <span class="stat-label">Score:</span>
+                    <span id="final-score" class="stat-value">0/10</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Accuracy:</span>
+                    <span id="accuracy" class="stat-value">0%</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Time:</span>
+                    <span id="final-time" class="stat-value">0:00</span>
+                </div>
+            </div>
+
+            <div class="name-input-section">
+                <h3>Enter your name for the leaderboard:</h3>
+                <input type="text" id="player-name" placeholder="Your name" maxlength="20">
+                <button id="submit-score-btn" class="btn btn-primary">Submit Score</button>
+            </div>
+        </div>
+
+        <div id="leaderboard-screen" class="screen">
+            <h1>Leaderboard</h1>
+            <div id="leaderboard-content">
+                <table id="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Time</th>
+                            <th>Accuracy</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-body">
+                    </tbody>
+                </table>
+                <p id="no-scores" style="display: none;">No scores yet. Be the first to play!</p>
+            </div>
+            <div class="button-group">
+                <button id="play-again-btn" class="btn btn-primary">Play Again</button>
+                <button id="back-to-start-btn" class="btn btn-secondary">Back to Start</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
